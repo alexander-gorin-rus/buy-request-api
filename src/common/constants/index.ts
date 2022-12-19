@@ -1,0 +1,3 @@
+export const MESSAGES = {
+  RESET_EMAIL_SENT: 'RESET_EMAIL_SENT',
+};

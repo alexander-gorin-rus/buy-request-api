@@ -1,0 +1,723 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Client {
+  avatar: String!
+  createdAt: String!
+  email: String!
+  id: ID!
+  locale: String!
+  name: String!
+  phone: String!
+  surname: String!
+  type: UserType!
+  updatedAt: String!
+}
+
+type Consumer {
+  avatar: String
+  clientAccountId: ID!
+  createdAt: String!
+  deals(dealFilterInput: DealFilterInput!): IGetDealResponseInput
+  email: String!
+  id: ID!
+  locale: String!
+  name: String!
+  notifications(notificationsFilterInput: NotificationFilterInput!): PageNotification
+  offers(offerFilterInput: OfferFilterInput!): GetOffersResponseInput
+  phone: String!
+  products(productFilterInput: ProductFilterInput!): GetProductsInput
+  ratings(page: Int, perPage: Int, userId: String!): GetRatingsResponse
+  ratingsEntity(entityId: String!): GetRatingsResponse
+  reports(page: Int, perPage: Int, reportId: String): GetReportsInput
+  requests(requestFilterInput: RequestFilterInput!): PageRequest
+  surname: String!
+  type: UserType!
+  updatedAt: String!
+  userId: ID!
+  userName: String!
+}
+
+input CreateDealRequest {
+  additionalConditions: String
+  consumerId: ID!
+  expiratedAt: String
+  offerId: ID!
+  requestId: ID!
+  sellerId: ID!
+  status: EDealStatus
+}
+
+type CreateDealResponse {
+  id: ID!
+  isSuccess: Boolean!
+}
+
+input CreateOfferInput {
+  """Offer additional conditions"""
+  additionalConditions: String
+
+  """Cover for offer"""
+  cover: String
+
+  """Offer description"""
+  description: String!
+
+  """Is the product eco-friendly"""
+  ecogood: Boolean = false
+
+  """Is offer ready for publishing"""
+  isDraft: Boolean!
+  media: [MediaOfferInput!]
+
+  """Offer price"""
+  price: Int!
+
+  """Product Id"""
+  productId: String!
+
+  """ID of request to wich the offer is being made"""
+  requestId: ID!
+
+  """Is offer ready for publishing"""
+  status: EOfferStatus = CREATED
+
+  """Cover for offer"""
+  title: String
+}
+
+input CreateProductInput {
+  """Cover photo"""
+  cover: String!
+
+  """Product description"""
+  description: String!
+
+  """Product video or photo"""
+  media: [MediaInput!]!
+
+  """Product model"""
+  model: String!
+
+  """Product name"""
+  name: String!
+
+  """Who made the product"""
+  production: String!
+
+  """Guarantee period"""
+  productionGuarantee: String!
+
+  """Product status"""
+  status: ProductStatus
+
+  """Product category"""
+  tags: [String!]!
+
+  """User id"""
+  userId: String!
+}
+
+input CreateRatingRequest {
+  comment: String
+  entityId: ID!
+  entityName: String!
+  value: Int!
+}
+
+input CreateReportInput {
+  """Report description"""
+  description: String!
+
+  """Entity id"""
+  entityId: String!
+
+  """Report subject"""
+  subject: String!
+
+  """User id"""
+  userId: String!
+}
+
+input CreateRequestInput {
+  """The budget that the user can pay"""
+  budget: Int!
+  cover: String = ""
+
+  """The description of the product that the user want to buy"""
+  description: String!
+  isDraft: Boolean!
+  media: [MediaRequestInput!]
+  products: [String!]!
+  readyForAnalogues: Boolean = false
+
+  """Request status"""
+  status: RequestStatus = DEFAULT_IN_PROGRESS
+
+  """The list of tags of the product that user want to buy"""
+  tags: [String!]!
+  title: String!
+}
+
+type Deal {
+  additionalConditions: String
+  consumerId: ID!
+  createdAt: String!
+  expiratedAt: String!
+  id: ID!
+  offer: Offer
+  offerId: ID!
+  offers: Offer
+  rating: GetRatingsResponse
+  request: Request
+  sellerId: ID!
+  status: EDealStatus!
+  updatedAt: String!
+}
+
+input DealFilterInput {
+  dealId: String
+  page: Int
+  perPage: Int
+  sort: [SortFilter!]
+  statuses: [EDealStatus!]
+}
+
+enum EDealStatus {
+  CANCELED
+  COMPLETED
+  CUSTOMER_PAID
+  DISPUTE
+  IN_PROGRESS
+  PAID
+}
+
+enum EOfferStatus {
+  CANCELED
+  CANCELED_BY_CONSUMER
+  CANCELED_BY_SELLER
+  CONFIRMED
+  CREATED
+  IN_DEAL
+  IN_PROGRESS
+  IS_HOLD
+}
+
+input GetIdsInput {
+  """The list ids of notifications to be set as read"""
+  ids: [String!]!
+}
+
+type GetOffersResponseInput {
+  data: [Offer!]!
+  pageInfo: PageInfo!
+}
+
+type GetProductsInput {
+  data: [Product!]!
+  pageInfo: PageInfo!
+}
+
+type GetRatingsResponse {
+  data: [Rating!]
+  pageInfo: PageInfo!
+  userRating: Float
+}
+
+type GetReportsInput {
+  data: [Report!]!
+  pageInfo: PageInfo!
+}
+
+type GetTagsInput {
+  data: [Tag!]!
+}
+
+type IGetDealResponseInput {
+  data: [Deal!]!
+  pageInfo: PageInfo!
+}
+
+type IsSuccessResponse {
+  isSuccess: Boolean!
+}
+
+type Media {
+  fileNameMinio: String!
+  fileOriginalName: String!
+  mimetype: String!
+}
+
+input MediaInput {
+  fileNameMinio: String!
+  fileOriginalName: String!
+  mimetype: String!
+}
+
+type MediaOffer {
+  bucket: String!
+  fileNameMinio: String!
+  fileOriginalName: String!
+  mimetype: String!
+}
+
+input MediaOfferInput {
+  bucket: String!
+  fileNameMinio: String!
+  fileOriginalName: String!
+  mimetype: String!
+}
+
+type MediaRequest {
+  bucket: String
+  fileNameMinio: String!
+  fileOriginalName: String!
+  mimetype: String!
+}
+
+input MediaRequestInput {
+  bucket: String!
+  fileNameMinio: String!
+  fileOriginalName: String!
+  mimetype: String!
+}
+
+type Mutation {
+  createDeal(newDeal: CreateDealRequest!): CreateDealResponse!
+  createOffer(createOfferData: CreateOfferInput!): IsSuccessResponse!
+  createProduct(createProductData: CreateProductInput!): IsSuccessResponse!
+  createRating(newRating: CreateRatingRequest!): IsSuccessResponse!
+  createReport(createReportData: CreateReportInput!): IsSuccessResponse!
+  createRequest(createRequestData: CreateRequestInput!): IsSuccessResponse!
+  createTag(name: String!, titleEn: String!, titleRu: String!): IsSuccessResponse!
+  deleteOffer(id: String!): IsSuccessResponse!
+  deleteProduct(id: String!): IsSuccessResponse!
+  deleteReport(id: String!): IsSuccessResponse!
+  setAllNotificationsArchive: IsSuccessResponse!
+  setAllNotificationsIsRead: IsSuccessResponse!
+  setNotificationsArchive(ids: GetIdsInput!): IsSuccessResponse!
+  setNotificationsRead(ids: GetIdsInput!): IsSuccessResponse!
+  updateConsumer(params: UpdateConsumerRequest!): UpdateConsumerResponse!
+  updateDeal(deal: UpdateDealRequest!): CreateDealResponse!
+  updateOffer(updateOfferData: UpdateOfferInput!): IsSuccessResponse!
+  updateProduct(updateProductData: UpdateProductInput!): IsSuccessResponse!
+  updateReport(updateReportData: UpdateReportInput!): IsSuccessResponse!
+  updateRequest(updateRequestInput: UpdateRequestInput!): IsSuccessResponse!
+  updateSeller(params: UpdateSellerRequest!): UpdateSellerResponse!
+  updateSellerSetting(params: UpdateSellerSettingRequest!): IsSuccessResponse!
+}
+
+type Notification {
+  archive: Boolean!
+  createdAt: String!
+  deal: [Deal!]
+  id: ID!
+  isRead: Boolean!
+  message: String!
+  offer: [Offer!]
+  request: [Request!]
+  subjectId: ID!
+  type: NotificationType!
+  updatedAt: String!
+  userId: ID!
+}
+
+input NotificationFilterInput {
+  archive: Boolean
+  isRead: Boolean
+  page: Int
+  perPage: Int
+  periodTime: Int
+  sort: [SortFilter!]
+  types: [NotificationType!]
+}
+
+enum NotificationType {
+  DEAL_CANCELED
+  DEAL_COMPLETED
+  DEAL_CUSTOMER_PAID
+  DEAL_DISPUTE
+  DEAL_PAID
+  NEW_DEAL_CREATED
+  NEW_MESSAGE
+  NEW_OFFER_CREATED
+  NEW_REQUEST_CREATED
+  OFFER_CANCELED
+  OFFER_CONFIRMED
+}
+
+type Offer {
+  additionalConditions: String!
+  cover: String!
+  createdAt: String!
+  deal: Deal
+  description: String!
+  ecogood: Boolean!
+  id: ID!
+  isDraft: Boolean!
+  media: [MediaOffer!]
+  offerAuthor: User
+  price: Int!
+  product: Product
+  productId: ID!
+  ratingUser: GetRatingsResponse
+  requestId: ID!
+  status: EOfferStatus!
+  title: String!
+  updatedAt: String!
+  userId: ID!
+}
+
+input OfferFilterInput {
+  offerId: String
+  page: Int
+  perPage: Int
+  sort: [SortFilter!]
+  statuses: [EOfferStatus!] = CREATED
+}
+
+type PageInfo {
+  page: Int!
+  perPage: Int!
+  totalCount: Int!
+  totalPageCount: Int!
+}
+
+type PageNotification {
+  data: [Notification!]!
+  pageInfo: PageInfo!
+}
+
+type PageRequest {
+  data: [Request!]!
+  pageInfo: PageInfo!
+}
+
+type Product {
+  cover: String!
+  createdAt: String!
+  description: String!
+  id: ID!
+  media: [Media!]!
+  model: String!
+  name: String!
+  production: String!
+  productionGuarantee: String!
+  rating: GetRatingsResponse
+  status: ProductStatus!
+  tags: [String!]!
+  tagsData: [Tag!]!
+  updatedAt: String!
+  userId: ID!
+}
+
+input ProductFilterInput {
+  myOwnProduct: Boolean
+  page: Int
+  perPage: Int
+  productId: String
+  sort: [SortFilter!]
+}
+
+input ProductForOfferFilterInput {
+  page: Int
+  perPage: Int
+  productIds: [String!]
+  sort: [SortFilter!]
+  tagNames: [String!]
+}
+
+enum ProductStatus {
+  CANCELED
+  CONFIRMED
+  ON_MODERATION
+}
+
+type Query {
+  client(userId: String!): Client!
+  consumer: Consumer!
+  products(productFilterInput: ProductFilterInput!): GetProductsInput!
+  productsForOffer(productForOfferFilterInput: ProductForOfferFilterInput!): GetProductsInput!
+  seller: Seller!
+  tags(tagId: String): GetTagsInput
+  user: User!
+}
+
+type Rating {
+  authorId: String!
+  comment: String
+  createdAt: String!
+  entityId: ID!
+  entityName: String!
+  id: ID!
+  updatedAt: String!
+  value: Int!
+}
+
+type Report {
+  createdAt: String!
+  description: String!
+  entityId: ID!
+  id: ID!
+  subject: String!
+  updatedAt: String!
+  userId: ID!
+}
+
+type Request {
+  budget: Int!
+  cover: String!
+  createdAt: String!
+  description: String!
+  id: ID!
+  media: [MediaRequest!]
+  products: [Product!]
+  ratingUser: GetRatingsResponse
+  readyForAnalogues: Boolean!
+  requestAuthor: RequestAuthor!
+  status: RequestStatus!
+  tags: [String!]!
+  tagsData: [Tag!]!
+  title: String!
+  updatedAt: String!
+  userId: ID!
+}
+
+type RequestAuthor {
+  avatar: String!
+  name: String!
+  surname: String!
+}
+
+input RequestFilterInput {
+  page: Int
+  perPage: Int
+  requestId: String
+  sort: [SortFilter!]
+  statuses: [RequestStatus!] = IN_PROGRESS
+}
+
+enum RequestStatus {
+  DEFAULT_IN_PROGRESS
+  DELETEABLE
+  DISABLE
+  IN_PROGRESS
+}
+
+type Seller {
+  avatar: String
+  clientAccountId: ID!
+  company: String!
+  createdAt: String!
+  deals(dealFilterInput: DealFilterInput!): IGetDealResponseInput
+  email: String!
+  id: ID!
+  locale: String!
+  name: String!
+  notifications(notificationsFilterInput: NotificationFilterInput!): PageNotification
+  offers(offerFilterInput: OfferFilterInput!): GetOffersResponseInput
+  phone: String!
+  products(productFilterInput: ProductFilterInput!): GetProductsInput
+  ratings(page: Int, perPage: Int, userId: String!): GetRatingsResponse
+  ratingsEntity(entityId: String!): GetRatingsResponse
+  reports(page: Int, perPage: Int, reportId: String): GetReportsInput
+  requests(requestFilterInput: RequestFilterInput!): PageRequest
+  setting: Setting!
+  surname: String!
+  type: UserType!
+  updatedAt: String!
+  userId: ID!
+  userName: String!
+}
+
+type Setting {
+  emails: Boolean!
+  id: ID!
+  tags: [String!]
+}
+
+input SortFilter {
+  orderBy: String = "ASC"
+  orderName: String = "id"
+}
+
+type Tag {
+  createdAt: String!
+  id: ID!
+  name: String!
+  titleEn: String!
+  titleRu: String!
+  updatedAt: String!
+}
+
+input UpdateConsumerRequest {
+  avatar: String
+  email: String
+  locale: String
+  name: String
+  newPassword: String
+  oldPassword: String
+  phone: String
+  surname: String
+  userName: String
+}
+
+type UpdateConsumerResponse {
+  user: Consumer!
+}
+
+input UpdateDealRequest {
+  additionalConditions: String
+  id: ID!
+  status: EDealStatus!
+}
+
+input UpdateOfferInput {
+  """Offer additional conditions"""
+  additionalConditions: String
+
+  """Cover for offer"""
+  cover: String
+
+  """Offer description"""
+  description: String
+
+  """Offer id"""
+  id: ID!
+
+  """Is offer ready for publishing"""
+  isDraft: Boolean
+  media: [MediaOfferInput!]
+
+  """Offer additional conditions"""
+  price: Int
+
+  """Offer status"""
+  status: EOfferStatus
+
+  """Title of offer"""
+  title: String
+}
+
+input UpdateProductInput {
+  """Cover photo"""
+  cover: String
+
+  """Product description"""
+  description: String
+
+  """Product id"""
+  id: ID!
+
+  """Product video or photo"""
+  media: [MediaInput!]
+
+  """Product model"""
+  model: String
+
+  """Product name"""
+  name: String
+
+  """Production"""
+  production: String
+
+  """Guarantee period"""
+  productionGuarantee: String
+
+  """Product status"""
+  status: ProductStatus
+
+  """Product category"""
+  tags: [String!]
+
+  """User id"""
+  userId: String!
+}
+
+input UpdateReportInput {
+  """Report description"""
+  description: String!
+
+  """Entity id"""
+  entityId: String!
+
+  """Report id"""
+  id: ID!
+
+  """Report subject"""
+  subject: String!
+
+  """User id"""
+  userId: String!
+}
+
+input UpdateRequestInput {
+  budget: Float
+  cover: String
+  delete: Boolean
+
+  """The description of the product that the user want to buy"""
+  description: String
+  id: String!
+  media: [MediaRequestInput!]
+  products: [String!]
+
+  """Request status"""
+  status: RequestStatus
+
+  """The list of tags of the product that user want to buy"""
+  tags: [String!]
+  title: String
+}
+
+input UpdateSellerRequest {
+  avatar: String
+  company: String!
+  email: String
+  locale: String
+  name: String
+  newPassword: String
+  oldPassword: String
+  phone: String
+  surname: String
+  userName: String
+}
+
+type UpdateSellerResponse {
+  user: Seller!
+}
+
+input UpdateSellerSettingRequest {
+  emails: Boolean
+  tags: [String!]
+}
+
+type User {
+  avatar: String
+  clientAccountId: ID!
+  createdAt: String!
+  deals(dealFilterInput: DealFilterInput!): IGetDealResponseInput
+  email: String!
+  id: ID!
+  locale: String!
+  name: String!
+  notifications(notificationsFilterInput: NotificationFilterInput!): PageNotification
+  offers(offerFilterInput: OfferFilterInput!): GetOffersResponseInput
+  phone: String!
+  products(productFilterInput: ProductFilterInput!): GetProductsInput
+  ratings(page: Int, perPage: Int, userId: String!): GetRatingsResponse
+  ratingsEntity(entityId: String!): GetRatingsResponse
+  reports(page: Int, perPage: Int, reportId: String): GetReportsInput
+  requests(requestFilterInput: RequestFilterInput!): PageRequest
+  surname: String!
+  type: UserType!
+  updatedAt: String!
+  userId: ID!
+  userName: String!
+}
+
+enum UserType {
+  CONSUMER
+  SELLER
+}
